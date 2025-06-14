@@ -27,24 +27,6 @@ Prompter/
 
 ---
 
-## 🚀 Installation
-
-1. **Zip your extension**:
-
-   ```bash
-   cd ~/Documents/Prompter
-   zip -r ~/Desktop/Prompter.zip .
-   ```
-
-2. **Upload to Qlik Sense**:
-
-   - In Qlik Sense SaaS: Go to **Admin** → **Extensions** → **Import** → Upload `Prompter.zip`.
-   - In Qlik Sense Enterprise: Copy `Prompter` folder into the `Extensions` directory on the server.
-
-3. **Refresh** your browser and open your app.
-
----
-
 ## ⚙️ Configuration
 
 1. Add **Prompter** to a sheet.
@@ -95,7 +77,4 @@ Prompter/
 - [Content Security Policy in Qlik Cloud](https://qlik.dev/extend/security/content-security-policy)
 
 ---
-
-*Built with ❤️ by Data Integration Solutions Architect*\
-*Prompter v1.0.0*
 
