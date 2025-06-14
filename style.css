@@ -1,85 +1,179 @@
+/* ==========================================================================
+   1. Container & Layout
+   ========================================================================== */
 .prompter-container {
   display: flex;
   flex-direction: column;
+  height: 100%;
   font-family: Arial, sans-serif;
-  width: 100%;
 }
 
-.prompter-start,
-.prompter-submit,
-.prompter-new {
-  margin: 6px 0;
-  padding: 6px 12px;
+/* ==========================================================================
+   2. Toolbar Buttons
+   ========================================================================== */
+.prompter-toolbar button {
+  padding: 0.6em 1.2em;
+  font-size: 14px;
   border: none;
   border-radius: 4px;
+  color: #fff;
   cursor: pointer;
-  background-color: #007acc;
-  color: #ffffff;
-  font-size: 14px;
+}
+.prompter-start {
+  background-color: #4caf50;      /* Qlik green */
+}
+.prompter-new {
+  background-color: #26a69a;      /* Qlik teal */
+}
+.prompter-start:disabled,
+.prompter-new:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-.prompter-start:disabled,
+/* ==========================================================================
+   3. Chat Window
+   ========================================================================== */
+.prompter-chat {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+}
+
+/* ==========================================================================
+   4. Placeholder Icon (Static Brain)
+   ========================================================================== */
+.prompter-placeholder {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 256px; height: 256px;
+  background: url("./icons/aibrain.svg") no-repeat center;
+  background-size: contain;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   5. Loader Icon (Pulsing)
+   ========================================================================== */
+.prompter-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 256px;
+  height: 256px;
+  pointer-events: none;
+  display: inline-block;
+  will-change: opacity;
+  /* Standard animation */
+  animation-name: pulseOpacity;
+  animation-duration: 1.2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-fill-mode: both;
+  /* WebKit-prefixed animation */
+  -webkit-animation-name: pulseOpacity;
+  -webkit-animation-duration: 1.2s;
+  -webkit-animation-timing-function: ease-in-out;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  -webkit-animation-fill-mode: both;
+  z-index: 1000;
+}
+
+
+
+/* ==========================================================================
+   6. Textual Spinner
+   ========================================================================== */
+.prompter-spinner {
+  text-align: center;
+  font-style: italic;
+  margin: 6px 0;
+  color: #757575;
+}
+
+/* ==========================================================================
+   7. Messages Area
+   ========================================================================== */
+.prompter-messages {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 8px;
+  background: #f9f9f9;
+  white-space: pre-wrap;
+}
+.prompter-user {
+  text-align: right;
+  font-weight: bold;
+  color:#4caf50;
+  margin: 4px 0;
+}
+.prompter-assistant {
+  text-align: left;
+  color: #545352;
+  margin: 4px 0;
+}
+
+/* ==========================================================================
+   8. Follow-up Input & Submit
+   ========================================================================== */
+.prompter-followup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border-top: 1px solid #ccc;
+}
+.prompter-input {
+  flex: 1;
+  margin-right: 8px;
+  padding: 6px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.prompter-submit {
+  padding: 0.6em 1.2em !important;
+  font-size: 14px !important;
+  background-color: #C2185B !important; /* Qlik fuchsia */
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+}
+
 .prompter-submit:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.prompter-chat {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #cccccc;
-  border-radius: 4px;
-  margin-top: 10px;
-  height: 300px;
-  width: 100%;
-  background-color: #ffffff;
-}
-
-.prompter-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 8px;
-  background-color: #f9f9f9;
-}
-
-.prompter-user,
-.prompter-assistant {
-  margin: 4px 0;
-  line-height: 1.4;
-}
-
-.prompter-user {
-  text-align: right;
-  font-weight: bold;
-}
-
-.prompter-assistant {
-  text-align: left;
-}
-
-.prompter-followup {
-  display: flex;
-  align-items: center;
-  padding: 8px;
-  border-top: 1px solid #dddddd;
-  background-color: #ffffff;
-}
-
-.prompter-input {
-  flex: 1;
-  padding: 6px 10px;
-  margin-right: 8px;
-  border: 1px solid #cccccc;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
+/* ==========================================================================
+   9. Error Messages
+   ========================================================================== */
 .prompter-error {
   color: #a00;
-  background-color: #fee;
+  background: #fee;
   padding: 6px;
   border: 1px solid #a00;
   border-radius: 4px;
-  margin: 5px 0;
+  margin-top: 8px;
   font-size: 13px;
+}
+
+/* Custom pulse animation for loader */
+@keyframes pulseOpacity {
+  from { opacity: 1; }
+  to   { opacity: 0.25; }
+}
+@-webkit-keyframes pulseOpacity {
+  from { opacity: 1; }
+  to   { opacity: 0.25; }
 }
