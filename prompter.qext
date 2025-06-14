@@ -1,0 +1,7 @@
+{
+  "name": "Prompter",
+  "description": "Prompter: Integration with Qlik Answers for interactive Q&A sessions.",
+  "type": "visualization",
+  "version": "1.1.0",
+  "author": "joe easley"
+}
