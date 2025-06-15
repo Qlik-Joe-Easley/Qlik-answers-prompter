@@ -75,7 +75,7 @@ define(["jquery", "qlik"], function($, qlik) {
       }
 
       // State: conversation thread + messages
-      this._state = this._state || { threadId: null, messages: [] };
+      this._state = this._state || { threadId: null, messages: [], started: false };
       const state = this._state;
 
       // Determine extension base URL for icons by scanning loaded scripts
@@ -220,9 +220,13 @@ define(["jquery", "qlik"], function($, qlik) {
          * 6) Start Inquiry: hide placeholder, show loader, create thread & first msg
          *************************************************************************/
         startBtn.on("click", () => {
+          if (state.started) return; // prevent double start
+
           startBtn.prop("disabled", true);
           newBtn.show();
           placeholder.hide();
+          state.started = true;
+
           qlik.currApp().variable.getContent(questionVar, varDef => {
             const raw = varDef.qContent.qString != null
                       ? varDef.qContent.qString
@@ -230,6 +234,8 @@ define(["jquery", "qlik"], function($, qlik) {
             const text = raw.trim();
             if (!text) {
               showError("Variable is empty");
+              startBtn.prop("disabled", false);
+              state.started = false;
               return;
             }
             showSpinner();
@@ -253,7 +259,11 @@ define(["jquery", "qlik"], function($, qlik) {
                 render();
                 sendInteraction(text);
               })
-              .catch(err => showError(err));
+              .catch(err => {
+                showError(err);
+                startBtn.prop("disabled", false);
+                state.started = false;
+              });
           });
         });
 
@@ -263,6 +273,7 @@ define(["jquery", "qlik"], function($, qlik) {
         newBtn.on("click", () => {
           state.threadId = null;
           state.messages = [];
+          state.started = false;
           messagesDiv.empty();
           followInput.val("");
           placeholder.show();
@@ -344,6 +355,11 @@ define(["jquery", "qlik"], function($, qlik) {
             `<div class="prompter-error">Error: ${text}</div>`
           );
         }
+      }
+
+      // Optional: Auto-start on paint if not started
+      if (!state.started) {
+        $element.find('.prompter-start').click();
       }
     }
   };
