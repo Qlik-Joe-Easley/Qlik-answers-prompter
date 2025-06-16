@@ -52,6 +52,48 @@ define(["jquery", "qlik"], function($, qlik) {
                   });
                 });
               }
+            },
+            // ----- Colors Section -----
+            colorsSection: {
+              label: "Custom Colors",
+              type: "items",
+              items: {
+                userMessageColor: {
+                  ref: "userMessageColor",
+                  label: "User Message Color",
+                  type: "string",
+                  component: "color-picker",
+                  options: { useColorExpression: true }
+                },
+                assistantMessageColor: {
+                  ref: "assistantMessageColor",
+                  label: "Assistant Message Color",
+                  type: "string",
+                  component: "color-picker",
+                  options: { useColorExpression: true }
+                },
+                startButtonColor: {
+                  ref: "startButtonColor",
+                  label: "Start Button Color",
+                  type: "string",
+                  component: "color-picker",
+                  options: { useColorExpression: true }
+                },
+                newInquiryButtonColor: {
+                  ref: "newInquiryButtonColor",
+                  label: "New Inquiry Button Color",
+                  type: "string",
+                  component: "color-picker",
+                  options: { useColorExpression: true }
+                },
+                followupButtonColor: {
+                  ref: "followupButtonColor",
+                  label: "Follow-up Submit Button Color",
+                  type: "string",
+                  component: "color-picker",
+                  options: { useColorExpression: true }
+                }
+              }
             }
           }
         }
@@ -81,8 +123,8 @@ define(["jquery", "qlik"], function($, qlik) {
       // Determine extension base URL for icons by scanning loaded scripts
       let extBaseUrl = '';
       Array.from(document.getElementsByTagName('script')).some(s => {
-        if (s.src && s.src.indexOf('prompter-vi.js') !== -1) {
-          extBaseUrl = s.src.replace(/\/prompter-vi\.js.*$/, '');
+        if (s.src && s.src.indexOf('prompter2.js') !== -1) {
+          extBaseUrl = s.src.replace(/\/prompter2\.js.*$/, '');
           return true;
         }
         return false;

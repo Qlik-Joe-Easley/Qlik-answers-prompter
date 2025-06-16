@@ -1,7 +1,7 @@
 {
-  "name": "Prompter",
+  "name": "Prompter 2.2",
   "description": "Prompter: Integration with Qlik Answers for interactive Q&A sessions.",
   "type": "visualization",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": "joe easley"
 }
