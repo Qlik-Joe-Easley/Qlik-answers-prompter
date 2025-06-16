@@ -108,6 +108,13 @@ define(["jquery", "qlik"], function($, qlik) {
       const assistantId   = layout.assistantId;
       const questionVar   = layout.questionVar;
 
+      // Custom color settings (fallback to defaults)
+      const userColor = layout.userMessageColor || "#000000";
+      const assistantColor = layout.assistantMessageColor || "#333333";
+      const startBtnColor = layout.startButtonColor || "#4caf50";
+      const newBtnColor = layout.newInquiryButtonColor || "#26a69a";
+      const followupBtnColor = layout.followupButtonColor || "#C2185B";
+
       // Require both config props
       if (!assistantId || !questionVar) {
         $element.append(
@@ -163,7 +170,7 @@ define(["jquery", "qlik"], function($, qlik) {
         const startBtn = $('<button class="prompter-start">Start inquiry</button>').css({
           padding: "0.6em 1.2em",
           fontSize: "14px",
-          backgroundColor: "#4caf50",
+          backgroundColor: startBtnColor,
           color: "#fff",
           border: "none",
           borderRadius: "4px",
@@ -172,7 +179,7 @@ define(["jquery", "qlik"], function($, qlik) {
         const newBtn = $('<button class="prompter-new">New inquiry</button>').css({
           padding: "0.6em 1.2em",
           fontSize: "14px",
-          backgroundColor: "#26a69a",
+          backgroundColor: newBtnColor,
           color: "#fff",
           border: "none",
           borderRadius: "4px",
@@ -222,6 +229,10 @@ define(["jquery", "qlik"], function($, qlik) {
         const followInput = $('<input type="text" class="prompter-input" placeholder="Ask a follow-up question..."/>');
         // Follow‑up submit button (styled via CSS)
         const submitBtn = $('<button class="prompter-submit">Submit</button>');
+        submitBtn.css({
+          backgroundColor: followupBtnColor,
+          color: "#fff"
+        });
         followDiv.append(followInput, submitBtn);
         chatWindow.append(followDiv);
 
@@ -363,13 +374,13 @@ define(["jquery", "qlik"], function($, qlik) {
           state.messages.forEach(m => {
             // Render user message with preserved line breaks
             messagesDiv.append(
-              $('<div class="prompter-user"></div>').html(
+              $('<div class="prompter-user"></div>').css("color", userColor).html(
                 `You: ${m.user.replace(/\n/g, '<br/>')}`
               )
             );
             // Render assistant message with preserved line breaks
             messagesDiv.append(
-              $('<div class="prompter-assistant"></div>').html(
+              $('<div class="prompter-assistant"></div>').css("color", assistantColor).html(
                 `Assistant: ${m.bot.replace(/\n/g, '<br/>')}`
               )
             );
