@@ -108,12 +108,12 @@ define(["jquery", "qlik"], function($, qlik) {
       const assistantId   = layout.assistantId;
       const questionVar   = layout.questionVar;
 
-      // Custom color settings (fallback to defaults)
-      const userColor = layout.userMessageColor || "#000000";
-      const assistantColor = layout.assistantMessageColor || "#333333";
-      const startBtnColor = layout.startButtonColor || "#4caf50";
-      const newBtnColor = layout.newInquiryButtonColor || "#26a69a";
-      const followupBtnColor = layout.followupButtonColor || "#C2185B";
+      // Custom color settings (only if provided)
+      const userColor = layout.userMessageColor;
+      const assistantColor = layout.assistantMessageColor;
+      const startBtnColor = layout.startButtonColor;
+      const newBtnColor = layout.newInquiryButtonColor;
+      const followupBtnColor = layout.followupButtonColor;
 
       // Require both config props
       if (!assistantId || !questionVar) {
@@ -170,7 +170,7 @@ define(["jquery", "qlik"], function($, qlik) {
         const startBtn = $('<button class="prompter-start">Start inquiry</button>').css({
           padding: "0.6em 1.2em",
           fontSize: "14px",
-          backgroundColor: startBtnColor,
+          backgroundColor: "#4caf50",
           color: "#fff",
           border: "none",
           borderRadius: "4px",
@@ -179,13 +179,21 @@ define(["jquery", "qlik"], function($, qlik) {
         const newBtn = $('<button class="prompter-new">New inquiry</button>').css({
           padding: "0.6em 1.2em",
           fontSize: "14px",
-          backgroundColor: newBtnColor,
+          backgroundColor: "#26a69a",
           color: "#fff",
           border: "none",
           borderRadius: "4px",
           cursor: "pointer",
           display: "none"
         });
+        // Apply custom start button color if set
+        if (startBtnColor) {
+          startBtn.css("background-color", startBtnColor);
+        }
+        // Apply custom new inquiry button color if set
+        if (newBtnColor) {
+          newBtn.css("background-color", newBtnColor);
+        }
         toolbar.append(startBtn, newBtn);
         container.append(toolbar);
 
@@ -229,10 +237,10 @@ define(["jquery", "qlik"], function($, qlik) {
         const followInput = $('<input type="text" class="prompter-input" placeholder="Ask a follow-up question..."/>');
         // Follow‑up submit button (styled via CSS)
         const submitBtn = $('<button class="prompter-submit">Submit</button>');
-        submitBtn.css({
-          backgroundColor: followupBtnColor,
-          color: "#fff"
-        });
+        // Apply custom follow-up button color if set
+        if (followupBtnColor) {
+          submitBtn.css("background-color", followupBtnColor);
+        }
         followDiv.append(followInput, submitBtn);
         chatWindow.append(followDiv);
 
@@ -372,18 +380,18 @@ define(["jquery", "qlik"], function($, qlik) {
         function render() {
           messagesDiv.empty();
           state.messages.forEach(m => {
-            // Render user message with preserved line breaks
-            messagesDiv.append(
-              $('<div class="prompter-user"></div>').css("color", userColor).html(
-                `You: ${m.user.replace(/\n/g, '<br/>')}`
-              )
-            );
-            // Render assistant message with preserved line breaks
-            messagesDiv.append(
-              $('<div class="prompter-assistant"></div>').css("color", assistantColor).html(
-                `Assistant: ${m.bot.replace(/\n/g, '<br/>')}`
-              )
-            );
+            // Render user message preserving line breaks
+            const userElem = $('<div class="prompter-user"></div>').html(`You: ${m.user.replace(/\n/g, '<br/>')}`);
+            if (userColor) {
+              userElem.css("color", userColor);
+            }
+            messagesDiv.append(userElem);
+            // Render assistant message preserving line breaks
+            const assistElem = $('<div class="prompter-assistant"></div>').html(`Assistant: ${m.bot.replace(/\n/g, '<br/>')}`);
+            if (assistantColor) {
+              assistElem.css("color", assistantColor);
+            }
+            messagesDiv.append(assistElem);
           });
           messagesDiv.scrollTop(messagesDiv.prop("scrollHeight"));
         }
